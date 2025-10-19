@@ -1,45 +1,183 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Simple Calculator</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: antiquewhite;
+            height: 100vh;
+        }
+
+        div.container {
+            width: 350px;
+            height: 80vh;
+            background-color: none;
+
+        }
+
+        /*input fields*/
+        div.inputfields {
+            text-align: center;
+            height: 25%;
+            border: 2px solid lightblue;
+            border-radius: 20px;
+        }
+
+        input {
+            width: 99%;
+            height: 50%;
+            border: none;
+            color: black;
+            text-align: right;
+            font-size: 35px;
+            padding-inline: 10px;
+
+        }
+
+        #upView {
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        #downView {
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            direction: rtl;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+
+        /*button*/
+        button {
+            width: 100%;
+            height: 100%;
+            background-color: rgb(224, 222, 222);
+            font-size: 30px;
+            border-radius: 20px;
+            border: 20px;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+
+        button:active {
+            scale: 0.8;
+
+            transition: scale ease .2s;
+        }
+
+        table {
+            width: 100%;
+            height: 75%;
+        }
+
+        td {
+            border: 2px;
+        }
+
+        button.number {
+            background-color: whitesmoke
+        }
+
+        .numbers {
+            background-color: beige;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="calculator">
-        <input type="text" id="display" readonly>
-        <div class="buttons">
-            <div class="first">
-                <button onclick="append('7')">7</button>
-                <button onclick="append('8')">8</button>
-                <button onclick="append('9')">9</button>
-                <button onclick="append('/')">/</button>
-            </div>
-            <div class="second">
-                <button onclick="append('4')">4</button>
-                <button onclick="append('5')">5</button>
-                <button onclick="append('6')">6</button>
-                <button onclick="append('*')">*</button>
-            </div>
-            <div class="third">
-                <button onclick="append('1')">1</button>
-                <button onclick="append('2')">2</button>
-                <button onclick="append('3')">3</button>
-                <button onclick="append('-')">-</button>
-            </div>
-            <div class="forth">
-                <button onclick="append('0')">0</button>
-                <button onclick="append('.')">.</button>
-                <button onclick="calculate()">=</button>
-                <button onclick="append('+')">+</button>
-            </div>
-            <button class="clear" onclick="clearDisplay()">C</button>
-            <button onclick="backspace()">⌫</button>
+    <div class="container">
+        <div class="inputfields">
+            <input type="text" style="font-size: 50px;" name="upView" id="upView" readonly><br />
+            <input type="text" name="downView" id="downView" readonly>
         </div>
+        <table>
+            <tr>
+                <td><button onclick="clearVIews()">AC</button></td>
+                <td><button onclick="backSpace()"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9.75 14.25 12m0 0 2.25 2.25M14.25 12l2.25-2.25M14.25 12 12 14.25m-2.58 4.92-6.374-6.375a1.125 1.125 0 0 1 0-1.59L9.42 4.83c.21-.211.497-.33.795-.33H19.5a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9.284c-.298 0-.585-.119-.795-.33Z" />
+                        </svg>
+
+                    </button></td>
+                <td><button onclick="minusQuote()">+/-</button></td>
+                <td><button onclick="toView('/')">/</button></td>
+            </tr>
+            <tr>
+                <td><button class="numbers" onclick="toView('7')">7</button></td>
+                <td><button class="numbers" onclick="toView(8)">8</button></td>
+                <td><button class="numbers" onclick="toView(9)">9</button></td>
+                <td><button onclick="toView('*')">x</button></td>
+            </tr>
+            <tr>
+                <td><button class="numbers" onclick="toView('4')">4</button></td>
+                <td><button class="numbers" onclick="toView('5')">5</button></td>
+                <td><button class="numbers" onclick="toView('6')">6</button></td>
+                <td><button onclick="toView('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button class="numbers" onclick="toView('1')">1</button></td>
+                <td><button class="numbers" onclick="toView('2')">2</button></td>
+                <td><button class="numbers" onclick="toView('3')">3</button></td>
+                <td><button onclick="toView('+')">+</button></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button class="numbers" onclick="toView('0')">0</button></td>
+                <td><button class="numbers" onclick="toView('.')">.</button></td>
+                <td><button onclick="calculate()">=</button></td>
+            </tr>
+        </table>
     </div>
-    
+
+    <script>
+        const view = document.getElementById('downView');
+        const upView = document.getElementById('upView')
+
+        function toView(input) {
+            view.value += input;
+        }
+
+        function minusQuote() {
+            view.value = "-(" + view.value + ")";
+        }
+
+        function calculate() {
+            try {
+
+                const answer = eval(view.value);
+                upView.value = answer;
+            }
+            catch {
+                upView.value = "Error";
+                view.value = "";
+            }
+        }
+
+        function backSpace() {
+             view.value=view.value.slice(0, -1);
+        }
+
+        function clearVIews() {
+            view.value = "";
+            upView.value = "";
+        }
+    </script>
 </body>
 
 </html>
